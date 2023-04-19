@@ -17,18 +17,32 @@ To set up the backend of the platform, you'll need to follow these steps:
 
 To develop the backend of the platform locally, you can use the following steps:
 
-1. Compile the smart contracts by running `truffle compile`. This will generate the compiled contract artifacts in the `build/contracts` directory.
+1. Compile the smart contracts by running truffle compile. This will generate the compiled contract artifacts in the build/contracts directory.
 2. Download and run Ganache by following the instructions on the official Ganache website: https://www.trufflesuite.com/ganache. Ganache will run a local blockchain that you can use to test your smart contracts.
-3. Migrate the smart contracts to the local blockchain by running `truffle migrate`. This will deploy the contracts to the local blockchain and generate contract addresses that you can use to interact with the contracts.
+3. Migrate the smart contracts to the local blockchain by running truffle migrate. This will deploy the contracts to the local blockchain and generate contract addresses that you can use to interact with the contracts.
+4. Start the Express.js server by running node app.js. This will start the server and allow you to interact with the smart contracts using the provided API endpoints.
+
+### Checking Contract Address
+To check the contract address after deploying, you can use the following command:
+
+1. Run truffle networks to see a list of all the networks you've deployed to, along with the contract addresses for each contract deployed.
 
 ### Testing
 
 To test the backend of the platform, you can use the following steps:
 
-1. Make sure you've compiled and migrated the smart contracts as described in the Local Development section.
-2. Run the tests in the `test/` directory by running `truffle test`. This will make sure that everything is working as expected.
+1. Make sure you've compiled, deployed, and started the server as described in the Local Development section.
+2. Use a tool like Postman to test the API endpoints and ensure that they are working as expected.
+3. Optionally, you can also run automated tests by running `./ethereum_start.sh` script, which compiles, migrates, and tests your contracts.
 
 Note: You can also run the Truffle development console to interact with your smart contracts and test your code. To do this, simply run truffle develop in your terminal. This will open the Truffle console, which you can use to deploy your smart contracts, interact with them, and test your code.
+
+### Running the Backend
+
+To start the backend of the platform, you can use the following steps:
+
+1. Make sure you've compiled, deployed, and tested your contracts as described in the Local Development section.
+2. Run `./backend_start.sh` script to start the Express backend server.
 
 ## Frontend
 
