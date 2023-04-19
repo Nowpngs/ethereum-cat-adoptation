@@ -1,10 +1,18 @@
 require("dotenv").config();
 
 const express = require("express");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+
 const Web3 = require("web3");
 const CatProfile = require("./build/contracts/CatProfile.json");
 
 const app = express();
+
+app.use(cors());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 const port = 3000;
 
 const web3 = new Web3(process.env.ETHEREUM_NODE_URL);
@@ -33,9 +41,14 @@ app.post("/cats", async (req, res) => {
 
   try {
     const accounts = await web3.eth.getAccounts();
+
+    const gasLimit = await catProfileContract.methods
+      .addCat(name, age, breed, availableForAdoption)
+      .estimateGas({ from: accounts[0] });
+
     const result = await catProfileContract.methods
       .addCat(name, age, breed, availableForAdoption)
-      .send({ from: accounts[0] });
+      .send({ from: accounts[0], gas: gasLimit });
 
     res.json({ txHash: result.transactionHash });
   } catch (err) {
