@@ -28,6 +28,8 @@ To test the backend of the platform, you can use the following steps:
 1. Make sure you've compiled and migrated the smart contracts as described in the Local Development section.
 2. Run the tests in the `test/` directory by running `truffle test`. This will make sure that everything is working as expected.
 
+Note: You can also run the Truffle development console to interact with your smart contracts and test your code. To do this, simply run truffle develop in your terminal. This will open the Truffle console, which you can use to deploy your smart contracts, interact with them, and test your code.
+
 ## Frontend
 
 The frontend of the platform can be built using any web development framework or library. To interact with the smart contracts, you can use a library like Web3.js, which provides a JavaScript API for interacting with Ethereum.
