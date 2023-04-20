@@ -14,9 +14,13 @@ export class ApiService {
   constructor(private http: HttpClient) {}
 
   getHeaders(): HttpHeaders {
+    const address = localStorage.getItem('address');
     const header = new HttpHeaders();
     header.append('Accept', 'application/json');
     header.append('Content-Type', 'application/json');
+    if (address) {
+      header.append('Address', address);
+    }
     return header;
   }
 
