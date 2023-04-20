@@ -1,4 +1,14 @@
 <div class="base-layout">
-  <app-header></app-header>
-  <ng-content></ng-content>
+  <app-header (toggleSidenav)="drawer.toggle()"></app-header>
+  <mat-drawer-container class="base-layout-content">
+    <mat-drawer class="side-bar"
+        #drawer
+        over>
+      Drawer content
+    </mat-drawer>
+    <mat-drawer-content>
+      testtt
+      <ng-content></ng-content>
+    </mat-drawer-content>
+  </mat-drawer-container>
 </div>

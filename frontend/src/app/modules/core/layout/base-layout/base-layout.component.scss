@@ -1,3 +1,14 @@
 .base-layout {
-    width: 100vw;
+  width: 100vw;
+  height: 100vh;
+
+  .base-layout-content {
+    width: 100%;
+    height: calc(100vh - 64px);
+  }
+}
+
+.side-bar {
+  width: 20%;
+  min-width: 200px;
 }
