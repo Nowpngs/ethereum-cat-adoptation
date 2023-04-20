@@ -1,17 +1,20 @@
 run-ethereum-server:
-	cd backend
 	echo "Compile Contracts"
-	truffle compile
+	cd backend && truffle compile
 	echo "Migrate Contracts to Ganache"
-	truffle migrate
+	cd backend && truffle migrate
+
+get-contract-address:
+	echo "Get Contract Address"
+	cd backend && truffle networks
 
 run-ethereum-test:
-	cd backend
 	echo "Run Test"
-	truffle test
+	cd backend && truffle test
 
 init-backend:
 	echo "Remove Old Node Modules"
+	--help
 	rm -rf backend/node_modules
 	echo "Installing Backend Dependencies"
 	cd backend && npm install
@@ -29,3 +32,5 @@ init-frontend:
 run-frontend:
 	echo "Starting Frontend"
 	cd frontend && ng serve
+
+
