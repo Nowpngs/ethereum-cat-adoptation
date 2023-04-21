@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { CoreService } from 'src/app/services/core.service';
 
 @Component({
@@ -10,9 +11,13 @@ export class LoginComponent implements OnInit {
   address: string = '';
   secret: string = '';
 
-  constructor(private coreService: CoreService) {}
+  constructor(private router: Router, private coreService: CoreService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.coreService.isLogin()) {
+      this.router.navigate(['']);
+    }
+  }
 
   login(): void {
     if (!this.address || !this.secret) return;
@@ -20,7 +25,8 @@ export class LoginComponent implements OnInit {
       .login({ address: this.address, secret: this.secret })
       .subscribe({
         next: (value) => {
-          console.log(value);
+          this.coreService.setAddress(this.address);
+          this.router.navigate(['']);
         },
         error: (error) => {
           console.log(error);

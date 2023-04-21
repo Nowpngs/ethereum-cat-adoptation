@@ -10,6 +10,14 @@ export class CoreService {
   constructor(private apiService: ApiService) {}
 
   login(data: { address: string; secret: string }): Observable<any> {
-    return this.apiService.post<any>(BACKEND_API.login, data);
+    return this.apiService.post<any>(BACKEND_API.auth, data);
+  }
+
+  setAddress(address: string): void {
+    localStorage.setItem('address', address);
+  }
+
+  isLogin(): boolean {
+    return !!localStorage.getItem('address');
   }
 }

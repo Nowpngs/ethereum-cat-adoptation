@@ -22,6 +22,25 @@ const catProfileContract = new web3.eth.Contract(
   catContractAddress
 );
 
+// Authentication endpoint
+app.post("/auth", async (req, res) => {
+  const { address, secret } = req.body;
+
+  try {
+    // Retrieve the account associated with the provided address
+    const account = await web3.eth.accounts.wallet.add(secret);
+
+    // Ensure that the provided address matches the account address
+    if (address.toLowerCase() !== account.address.toLowerCase()) {
+      throw new Error("Invalid address or secret");
+    }
+
+    res.json({ success: true });
+  } catch (err) {
+    res.status(401).json({ error: err.message });
+  }
+});
+
 app.get("/cats", async (req, res) => {
   const numberOfCats = await catProfileContract.methods
     .getNumberOfCats()

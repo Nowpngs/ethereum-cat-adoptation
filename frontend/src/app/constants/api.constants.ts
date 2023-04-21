@@ -1,5 +1,5 @@
-const BASE_URL = 'http://localhost:3000/api';
+const BASE_URL = 'http://localhost:3000';
 
 export const BACKEND_API = {
-  login: BASE_URL + '/login',
+  auth: BASE_URL + '/auth',
 };
