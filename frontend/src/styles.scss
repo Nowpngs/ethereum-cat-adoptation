@@ -5,17 +5,36 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 :root {
-    --primary-color: #3f51b5;
+  --primary-color: #3f51b5;
 }
 
 
 html,
 body {
-    height: 100%;
-    background-color: #f1f1f1;
+  height: 100%;
+  background-color: #f1f1f1;
 }
 
 body {
-    margin: 0;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
+  margin: 0;
+  padding: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.main-content {
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+
+  .content-title {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    width: 100%;
+    height: fit-content;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--primary-color);
+  }
 }
