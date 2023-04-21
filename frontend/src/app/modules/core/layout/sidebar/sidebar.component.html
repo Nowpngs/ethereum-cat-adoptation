@@ -9,6 +9,10 @@
     </ng-container>
   </div>
   <div class="sidebar-credentials">
+    <div class="address-detail"
+        *ngIf="userAddress">
+      Address: {{ userAddress }}
+    </div>
     <div class="login-logout"
         *ngIf="!isLogin"
         (click)="goToLink('/login')">Login</div>

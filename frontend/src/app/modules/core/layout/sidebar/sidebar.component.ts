@@ -16,6 +16,7 @@ export class SidebarComponent implements OnInit {
   @Output() redirectUrl = new EventEmitter<void>();
   features: Features[] = [];
   isLogin: boolean = this.coreService.isLogin();
+  userAddress: string = localStorage.getItem('address') || '';
 
   constructor(private router: Router, private coreService: CoreService) {}
 
