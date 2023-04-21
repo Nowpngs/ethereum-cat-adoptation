@@ -9,7 +9,13 @@
     </ng-container>
   </div>
   <div class="sidebar-credentials">
-    <div class="login"
+    <div class="login-logout"
+        *ngIf="!isLogin"
         (click)="goToLink('/login')">Login</div>
+    <div *ngIf="isLogin"
+        class="login-logout"
+        (click)="logout()">
+      Logout
+    </div>
   </div>
 </div>

@@ -27,6 +27,7 @@ export class LoginComponent implements OnInit {
         next: (value) => {
           this.coreService.setAddress(this.address);
           this.router.navigate(['']);
+          window.location.reload();
         },
         error: (error) => {
           console.log(error);
