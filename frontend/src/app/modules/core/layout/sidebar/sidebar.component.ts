@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { USER_FEATURES } from 'src/app/constants/side-bar.constants';
 import { Features } from 'src/app/models/core.models';
@@ -9,6 +9,7 @@ import { Features } from 'src/app/models/core.models';
   styleUrls: ['./sidebar.component.scss'],
 })
 export class SidebarComponent {
+  @Output() redirectUrl = new EventEmitter<void>();
   features: Features[] = USER_FEATURES;
 
   constructor(private router: Router) {}
@@ -21,6 +22,7 @@ export class SidebarComponent {
   }
 
   goToLink(featureUrl: string) {
+    this.redirectUrl.emit();
     this.router.navigate([featureUrl]);
   }
 }

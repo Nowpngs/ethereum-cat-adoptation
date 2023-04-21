@@ -1,9 +1,15 @@
 <div class="sidebar-content">
-  <ng-container *ngFor="let eachFeature of features">
-    <div class="sidebar-feature"
-        [ngClass]="{'active': isSelected(eachFeature.featureUrl)}"
-        (click)="goToLink(eachFeature.featureUrl)">
-      <div class="sidebar-title">{{ eachFeature.featureName}}</div>
-    </div>
-  </ng-container>
+  <div class="sidebar-feature">
+    <ng-container *ngFor="let eachFeature of features">
+      <div class="sidebar-feature-content"
+          [ngClass]="{'active': isSelected(eachFeature.featureUrl)}"
+          (click)="goToLink(eachFeature.featureUrl)">
+        <div class="sidebar-title">{{ eachFeature.featureName}}</div>
+      </div>
+    </ng-container>
+  </div>
+  <div class="sidebar-credentials">
+    <div class="login"
+        (click)="goToLink('/login')">Login</div>
+  </div>
 </div>
