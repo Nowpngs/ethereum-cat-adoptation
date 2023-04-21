@@ -7,6 +7,9 @@ import { CoreModule } from './modules/core/core.module';
 import { CatModule } from './modules/cat/cat.module';
 import { LoginComponent } from './modules/login/login/login.component';
 import { MatInputModule } from '@angular/material/input';
+import { HttpClientModule } from '@angular/common/http';
+import { MatButtonModule } from '@angular/material/button';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent],
@@ -17,6 +20,9 @@ import { MatInputModule } from '@angular/material/input';
     CoreModule,
     CatModule,
     MatInputModule,
+    HttpClientModule,
+    MatButtonModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -4,13 +4,19 @@
     <mat-form-field class="address">
       <mat-label>User Address</mat-label>
       <input matInput
-          placeholder="address">
+          placeholder="address"
+          [(ngModel)]="address">
     </mat-form-field>
     <mat-form-field class="address">
       <mat-label>User Secret</mat-label>
       <input matInput
-          placeholder="secret">
+          placeholder="secret"
+          [(ngModel)]="secret">
     </mat-form-field>
-
+    <div class="w-full flex justify-center items-center pt-5">
+      <button class="w-[100px]"
+          mat-raised-button
+          (click)="login()">Login</button>
+    </div>
   </div>
 </div>
