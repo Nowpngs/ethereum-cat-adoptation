@@ -5,11 +5,11 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from './modules/core/core.module';
 import { CatModule } from './modules/cat/cat.module';
-import { LoginComponent } from './modules/login/login/login.component';
 import { MatInputModule } from '@angular/material/input';
 import { HttpClientModule } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
+import { LoginComponent } from './modules/login/login.component';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent],
