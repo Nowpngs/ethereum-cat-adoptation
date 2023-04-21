@@ -4,6 +4,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from './modules/core/core.module';
+import { CatModule } from './modules/cat/cat.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -12,6 +13,7 @@ import { CoreModule } from './modules/core/core.module';
     AppRoutingModule,
     BrowserAnimationsModule,
     CoreModule,
+    CatModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
