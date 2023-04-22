@@ -14,6 +14,7 @@ import { CreateEditOfferModalComponent } from 'src/app/standalone/create-edit-of
 })
 export class CatListsComponent implements OnInit {
   catList: Cat[] = [];
+  address: string = localStorage.getItem('address') || '';
 
   constructor(
     private router: Router,
@@ -36,6 +37,10 @@ export class CatListsComponent implements OnInit {
         this.notificationService.showError(error.message, 'Fetch Cat Error');
       },
     });
+  }
+
+  isOwner(owner: string): boolean {
+    return owner.toLocaleLowerCase() == this.address.toLocaleLowerCase();
   }
 
   openCreateOffer(): void {
