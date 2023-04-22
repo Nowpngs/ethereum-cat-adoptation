@@ -11,6 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { LoginComponent } from './modules/login/login.component';
 import { MarketModule } from './modules/market/market.module';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent],
@@ -25,6 +26,7 @@ import { MarketModule } from './modules/market/market.module';
     HttpClientModule,
     MatButtonModule,
     FormsModule,
+    ToastrModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -2,23 +2,28 @@
   <div class="content-title">
     All Cat For Adoption
   </div>
-  <ng-container *ngFor="let num of [2,2,2,2,2,2,2,2,2,2]">
+  <ng-container *ngFor="let cat of catList">
     <div class="card-content">
       <mat-card>
         <mat-card-header>
           <div mat-card-avatar
               class="header-image"></div>
-          <mat-card-title>Shiba Inu</mat-card-title>
-          <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+          <mat-card-title>{{ cat.name }}</mat-card-title>
+          <mat-card-subtitle>{{ cat.breed }}</mat-card-subtitle>
         </mat-card-header>
         <img mat-card-image
             src="https://material.angular.io/assets/img/examples/shiba2.jpg"
-            alt="Photo of a Shiba Inu">
+            alt="Photo of a Cat">
         <mat-card-content>
           <div class="w-full pt-4">
-            The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-            A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
-            bred for hunting.
+            <div class="w-full flex flex-wrap pb-2">
+              <div class="auto-cols-auto font-bold">Age:</div>
+              <div class="auto-cols-auto pl-2">{{ cat.age }}</div>
+            </div>
+            <div class="w-full">
+              <div class="font-bold">Description:</div>
+              <div>{{ cat.description }}</div>
+            </div>
           </div>
         </mat-card-content>
         <mat-card-actions>

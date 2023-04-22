@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CoreService } from 'src/app/services/core.service';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,11 @@ export class LoginComponent implements OnInit {
   address: string = '';
   secret: string = '';
 
-  constructor(private router: Router, private coreService: CoreService) {}
+  constructor(
+    private router: Router,
+    private coreService: CoreService,
+    private notificationService: NotificationService
+  ) {}
 
   ngOnInit(): void {
     if (this.coreService.isLogin()) {
@@ -30,7 +35,7 @@ export class LoginComponent implements OnInit {
           window.location.reload();
         },
         error: (error) => {
-          console.log(error);
+          this.notificationService.showError(error.message, 'Login Error');
         },
       });
   }
