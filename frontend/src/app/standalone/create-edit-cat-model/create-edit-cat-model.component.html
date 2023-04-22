@@ -1,0 +1,20 @@
+<h1 mat-dialog-title>Hi </h1>
+<div mat-dialog-content>
+  <p>What's your favorite animal?</p>
+  <mat-form-field appearance="fill">
+    <mat-label>Favorite Animal</mat-label>
+    <input matInput>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions
+    class="footer">
+  <div class="pr-2">
+    <button mat-button
+        (click)="onNoClick()">No Thanks</button>
+  </div>
+  <div>
+    <button mat-raised-button
+        color="primary"
+        cdkFocusInitial>Ok</button>
+  </div>
+</div>
