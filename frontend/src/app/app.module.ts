@@ -10,6 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { LoginComponent } from './modules/login/login.component';
+import { MarketModule } from './modules/market/market.module';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent],
@@ -19,6 +20,7 @@ import { LoginComponent } from './modules/login/login.component';
     BrowserAnimationsModule,
     CoreModule,
     CatModule,
+    MarketModule,
     MatInputModule,
     HttpClientModule,
     MatButtonModule,
