@@ -13,6 +13,7 @@ import { LoginComponent } from './modules/login/login.component';
 import { MarketModule } from './modules/market/market.module';
 import { ToastrModule } from 'ngx-toastr';
 import { AuthGuard } from './auth.guard';
+import { OfferModule } from './modules/offer/offer.module';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent],
@@ -22,6 +23,7 @@ import { AuthGuard } from './auth.guard';
     BrowserAnimationsModule,
     CoreModule,
     CatModule,
+    OfferModule,
     MarketModule,
     MatInputModule,
     HttpClientModule,

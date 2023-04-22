@@ -19,6 +19,12 @@ const routes: Routes = [
       import('./modules/market/market.module').then((m) => m.MarketModule),
     canActivate: [AuthGuard],
   },
+  {
+    path: 'offer',
+    loadChildren: () =>
+      import('./modules/offer/offer.module').then((m) => m.OfferModule),
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({
