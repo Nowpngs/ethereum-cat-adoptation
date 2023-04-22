@@ -17,7 +17,7 @@ export const USER_FEATURES: Features[] = [
   {
     featureName: 'My Markets',
     icon: '',
-    featureUrl: '/markets',
+    featureUrl: '/market',
   },
   {
     featureName: 'My Offers',

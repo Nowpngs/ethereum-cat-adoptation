@@ -12,6 +12,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('./modules/cat/cat.module').then((m) => m.CatModule),
   },
+  {
+    path: 'market',
+    loadChildren: () =>
+      import('./modules/market/market.module').then((m) => m.MarketModule),
+  },
 ];
 
 @NgModule({
