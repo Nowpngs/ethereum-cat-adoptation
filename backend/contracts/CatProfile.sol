@@ -1,9 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
 
-import "./Ownable.sol";
-
-contract CatProfile is Ownable {
+contract CatProfile {
     struct Cat {
         string name;
         uint256 age;
@@ -34,11 +32,29 @@ contract CatProfile is Ownable {
         string description
     );
 
+    event CatEdited(
+        uint256 indexed catIndex,
+        string name,
+        uint256 age,
+        string breed,
+        string description
+    );
+
     event CatOwnershipTransferred(
         uint256 indexed catIndex,
         address indexed previousOwner,
         address indexed newOwner
     );
+
+    modifier onlyOwner(uint256 _index) {
+        require(_index < cats.length, "Invalid index");
+        Cat storage cat = cats[_index];
+        require(
+            msg.sender == cat.owner,
+            "Only the current owner can perform this operation"
+        );
+        _;
+    }
 
     function addCat(
         string memory _name,
@@ -48,6 +64,22 @@ contract CatProfile is Ownable {
     ) public {
         cats.push(Cat(_name, _age, _breed, true, msg.sender, _description));
         emit CatAdded(_name, _age, _breed, true, msg.sender, _description);
+    }
+
+    function editCat(
+        uint256 _index,
+        string memory _name,
+        uint256 _age,
+        string memory _breed,
+        string memory _description
+    ) public onlyOwner(_index) {
+        Cat storage cat = cats[_index];
+        cat.name = _name;
+        cat.age = _age;
+        cat.breed = _breed;
+        cat.description = _description;
+
+        emit CatEdited(_index, _name, _age, _breed, _description);
     }
 
     function getCat(

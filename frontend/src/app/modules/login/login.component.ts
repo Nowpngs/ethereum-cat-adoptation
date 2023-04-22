@@ -31,8 +31,6 @@ export class LoginComponent implements OnInit {
       .subscribe({
         next: (value) => {
           this.coreService.setAddress(this.address);
-          this.router.navigate(['']);
-          window.location.reload();
         },
         error: (error) => {
           this.notificationService.showError(error.message, 'Login Error');

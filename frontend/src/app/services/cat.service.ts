@@ -21,4 +21,8 @@ export class CatService {
   addCat(cat: CatPayload): Observable<any> {
     return this.apiService.post(BACKEND_API.cats, cat);
   }
+
+  editCat(id: number, cat: CatPayload): Observable<any> {
+    return this.apiService.update(BACKEND_API.cats + '/' + id, cat);
+  }
 }

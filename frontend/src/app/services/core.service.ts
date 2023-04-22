@@ -16,6 +16,8 @@ export class CoreService {
 
   setAddress(address: string): void {
     localStorage.setItem('address', address);
+    this.router.navigate(['']);
+    window.location.reload();
   }
 
   isLogin(): boolean {

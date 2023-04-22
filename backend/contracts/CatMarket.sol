@@ -1,10 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
 
-import "./Ownable.sol";
 import "./CatProfile.sol";
 
-contract CatMarket is Ownable {
+contract CatMarket {
     struct Offer {
         uint256 catIndex;
         address seller;

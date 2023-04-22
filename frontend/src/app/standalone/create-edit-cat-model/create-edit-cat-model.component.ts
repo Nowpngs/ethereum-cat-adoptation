@@ -52,12 +52,27 @@ export class CreateEditCatModelComponent implements OnInit {
   }
 
   submit(): void {
+    this.data.id ? this.editCat() : this.addCat();
+  }
+
+  addCat(): void {
     this.catService.addCat(this.catPayload).subscribe({
       next: (data) => {
         this.dialogRef.close();
       },
       error: (error) => {
         this.notificationService.showError(error.message, 'Add Cat Error');
+      },
+    });
+  }
+
+  editCat(): void {
+    this.catService.editCat(this.data.id, this.catPayload).subscribe({
+      next: (data) => {
+        this.dialogRef.close();
+      },
+      error: (error) => {
+        this.notificationService.showError(error.message, 'Edit Cat Error');
       },
     });
   }

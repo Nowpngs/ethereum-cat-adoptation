@@ -67,7 +67,7 @@ app.get("/cats", async (req, res) => {
 // Add a new cat
 app.post("/cats", async (req, res) => {
   try {
-    const account = req.headers["Address"];
+    const account = req.headers["address"];
     const { name, age, breed, description } = req.body;
 
     const gasLimit = await catProfileContract.methods
@@ -76,6 +76,30 @@ app.post("/cats", async (req, res) => {
 
     const result = await catProfileContract.methods
       .addCat(name, age, breed, description)
+      .send({
+        from: account,
+        gas: gasLimit,
+      });
+
+    res.json({ txHash: result.transactionHash });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Edit a cat
+app.patch("/cats/:id", async (req, res) => {
+  try {
+    const account = req.headers["address"];
+    const { id } = req.params;
+    const { name, age, breed, description } = req.body;
+
+    const gasLimit = await catProfileContract.methods
+      .editCat(id, name, age, breed, description)
+      .estimateGas({ from: account });
+
+    const result = await catProfileContract.methods
+      .editCat(id, name, age, breed, description)
       .send({ from: account, gas: gasLimit });
 
     res.json({ txHash: result.transactionHash });
@@ -87,7 +111,7 @@ app.post("/cats", async (req, res) => {
 // Get my Cats
 app.get("/my-cats", async (req, res) => {
   try {
-    const account = req.headers["Address"];
+    const account = req.headers["address"];
     const myCats = await catProfileContract.methods
       .getMyCats()
       .call({ from: account });
