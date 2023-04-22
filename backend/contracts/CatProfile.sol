@@ -128,4 +128,38 @@ contract CatProfile is Ownable {
 
         return availableCats;
     }
+
+    function getMyCats() public view returns (CatInfo[] memory) {
+        uint256 myCatsCount = 0;
+        for (uint256 i = 0; i < cats.length; i++) {
+            if (cats[i].owner == msg.sender) {
+                myCatsCount++;
+            }
+        }
+
+        if (myCatsCount == 0) {
+            return new CatInfo[](0);
+        }
+
+        CatInfo[] memory myCats = new CatInfo[](myCatsCount);
+        uint256 currentIndex = 0;
+
+        for (uint256 i = 0; i < cats.length; i++) {
+            if (cats[i].owner == msg.sender) {
+                Cat storage cat = cats[i];
+                myCats[currentIndex] = CatInfo({
+                    id: i,
+                    name: cat.name,
+                    age: cat.age,
+                    breed: cat.breed,
+                    description: cat.description,
+                    availableForAdoption: cat.availableForAdoption,
+                    owner: cat.owner
+                });
+                currentIndex++;
+            }
+        }
+
+        return myCats;
+    }
 }

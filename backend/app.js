@@ -85,6 +85,30 @@ app.post("/cats", async (req, res) => {
   }
 });
 
+// Get my Cats
+app.get("/my-cats", async (req, res) => {
+  try {
+    const account = req.headers["Address"];
+    const myCats = await catProfileContract.methods
+      .getMyCats()
+      .call({ from: account });
+
+    res.json(
+      myCats.map((cat, index) => ({
+        id: cat.id,
+        name: cat.name,
+        age: cat.age,
+        breed: cat.breed,
+        description: cat.description,
+        availableForAdoption: cat.availableForAdoption,
+        owner: cat.owner.toLowerCase(),
+      }))
+    );
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);
 });

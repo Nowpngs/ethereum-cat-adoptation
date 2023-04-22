@@ -13,4 +13,8 @@ export class CatService {
   getAvailableCats(): Observable<Cat[]> {
     return this.apiService.get<Cat[]>(BACKEND_API.cats);
   }
+
+  getMyCats(): Observable<Cat[]> {
+    return this.apiService.get<Cat[]>(BACKEND_API.my_cats);
+  }
 }

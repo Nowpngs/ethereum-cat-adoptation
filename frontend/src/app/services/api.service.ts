@@ -21,6 +21,7 @@ export class ApiService {
     if (address) {
       header.append('Address', address);
     }
+    console.log(header)
     return header;
   }
 
