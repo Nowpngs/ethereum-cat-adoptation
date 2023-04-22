@@ -16,12 +16,12 @@
       </div>
     </div>
   </div>
-  <ng-container>
+  <ng-container *ngIf="isSelectedTab(1)">
     <div class="table-content">
       <div class="btn-area">
         <button mat-raised-button
             color="primary"
-            (click)="openCreateCat()">ADDING CAT</button>
+            (click)="openCreateEditCat()">ADDING CAT</button>
       </div>
       <table>
         <thead>
@@ -35,13 +35,16 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>2</td>
-            <td>Taohoo</td>
-            <td>12</td>
-            <td>Scotish Fold</td>
-            <td>dfuaksdjfkldsaj fkdsl fjladskfjkdsalf </td>
+          <tr *ngFor="let cat of sellingCatList">
+            <td>{{cat.id}}</td>
+            <td>{{cat.name}}</td>
+            <td>{{cat.age}}</td>
+            <td>{{cat.breed}}</td>
+            <td>{{cat.description}}</td>
             <td>
+              <button mat-raised-button
+                  color="basic"
+                  (click)="openCreateEditCat(cat)">EDIT</button>
             </td>
           </tr>
         </tbody>

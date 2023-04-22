@@ -66,18 +66,17 @@ app.get("/cats", async (req, res) => {
 
 // Add a new cat
 app.post("/cats", async (req, res) => {
-  const { name, age, breed, availableForAdoption, description } = req.body;
-
   try {
-    const accounts = await web3.eth.getAccounts();
+    const account = req.headers["Address"];
+    const { name, age, breed, description } = req.body;
 
     const gasLimit = await catProfileContract.methods
       .addCat(name, age, breed, description)
-      .estimateGas({ from: accounts[0] });
+      .estimateGas({ from: account });
 
     const result = await catProfileContract.methods
       .addCat(name, age, breed, description)
-      .send({ from: accounts[0], gas: gasLimit });
+      .send({ from: account, gas: gasLimit });
 
     res.json({ txHash: result.transactionHash });
   } catch (err) {
