@@ -10,6 +10,17 @@ contract CatProfile is Ownable {
         string breed;
         bool availableForAdoption;
         address owner;
+        string description;
+    }
+
+    struct CatInfo {
+        uint256 id;
+        string name;
+        uint256 age;
+        string breed;
+        string description;
+        bool availableForAdoption;
+        address owner;
     }
 
     Cat[] public cats;
@@ -19,8 +30,10 @@ contract CatProfile is Ownable {
         uint256 age,
         string breed,
         bool availableForAdoption,
-        address owner
+        address owner,
+        string description
     );
+
     event CatOwnershipTransferred(
         uint256 indexed catIndex,
         address indexed previousOwner,
@@ -30,10 +43,11 @@ contract CatProfile is Ownable {
     function addCat(
         string memory _name,
         uint256 _age,
-        string memory _breed
+        string memory _breed,
+        string memory _description
     ) public {
-        cats.push(Cat(_name, _age, _breed, true, msg.sender));
-        emit CatAdded(_name, _age, _breed, true, msg.sender);
+        cats.push(Cat(_name, _age, _breed, true, msg.sender, _description));
+        emit CatAdded(_name, _age, _breed, true, msg.sender, _description);
     }
 
     function getCat(
@@ -41,7 +55,14 @@ contract CatProfile is Ownable {
     )
         public
         view
-        returns (string memory, uint256, string memory, bool, address)
+        returns (
+            string memory,
+            uint256,
+            string memory,
+            bool,
+            address,
+            string memory
+        )
     {
         require(_index < cats.length, "Invalid index");
         Cat storage cat = cats[_index];
@@ -50,7 +71,8 @@ contract CatProfile is Ownable {
             cat.age,
             cat.breed,
             cat.availableForAdoption,
-            cat.owner
+            cat.owner,
+            cat.description
         );
     }
 
@@ -71,5 +93,39 @@ contract CatProfile is Ownable {
         cat.availableForAdoption = false;
 
         emit CatOwnershipTransferred(_index, msg.sender, _newOwner);
+    }
+
+    function getAvailableCats() public view returns (CatInfo[] memory) {
+        uint256 availableCatsCount = 0;
+        for (uint256 i = 0; i < cats.length; i++) {
+            if (cats[i].availableForAdoption) {
+                availableCatsCount++;
+            }
+        }
+
+        if (availableCatsCount == 0) {
+            return new CatInfo[](0);
+        }
+
+        CatInfo[] memory availableCats = new CatInfo[](availableCatsCount);
+        uint256 currentIndex = 0;
+
+        for (uint256 i = 0; i < cats.length; i++) {
+            if (cats[i].availableForAdoption) {
+                Cat storage cat = cats[i];
+                availableCats[currentIndex] = CatInfo({
+                    id: i,
+                    name: cat.name,
+                    age: cat.age,
+                    breed: cat.breed,
+                    description: cat.description,
+                    availableForAdoption: cat.availableForAdoption,
+                    owner: cat.owner
+                });
+                currentIndex++;
+            }
+        }
+
+        return availableCats;
     }
 }

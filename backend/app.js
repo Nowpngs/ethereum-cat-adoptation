@@ -41,32 +41,42 @@ app.post("/auth", async (req, res) => {
   }
 });
 
+// Get available cats
 app.get("/cats", async (req, res) => {
-  const numberOfCats = await catProfileContract.methods
-    .getNumberOfCats()
-    .call();
-  const cats = [];
+  try {
+    const availableCats = await catProfileContract.methods
+      .getAvailableCats()
+      .call();
 
-  for (let i = 0; i < numberOfCats; i++) {
-    const cat = await catProfileContract.methods.getCat(i).call();
-    cats.push(cat);
+    res.json(
+      availableCats.map((cat, index) => ({
+        id: index,
+        name: cat.name,
+        age: cat.age,
+        breed: cat.breed,
+        description: cat.description,
+        availableForAdoption: cat.availableForAdoption,
+        owner: cat.owner.toLowerCase(),
+      }))
+    );
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
-
-  res.json(cats);
 });
 
+// Add a new cat
 app.post("/cats", async (req, res) => {
-  const { name, age, breed, availableForAdoption } = req.body;
+  const { name, age, breed, availableForAdoption, description } = req.body;
 
   try {
     const accounts = await web3.eth.getAccounts();
 
     const gasLimit = await catProfileContract.methods
-      .addCat(name, age, breed, availableForAdoption)
+      .addCat(name, age, breed, description)
       .estimateGas({ from: accounts[0] });
 
     const result = await catProfileContract.methods
-      .addCat(name, age, breed, availableForAdoption)
+      .addCat(name, age, breed, description)
       .send({ from: accounts[0], gas: gasLimit });
 
     res.json({ txHash: result.transactionHash });

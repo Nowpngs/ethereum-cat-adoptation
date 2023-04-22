@@ -45,7 +45,8 @@ contract CatMarket is Ownable {
             uint256 age,
             string memory breed,
             bool availableForAdoption,
-            address owner
+            address owner,
+            string memory description
         ) = catProfile.getCat(_catIndex);
         require(availableForAdoption, "Cat not available for adoption");
         offers.push(Offer(_catIndex, msg.sender, _price, false));
