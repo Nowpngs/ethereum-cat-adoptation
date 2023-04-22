@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './modules/login/login.component';
+import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
   {
@@ -16,6 +17,7 @@ const routes: Routes = [
     path: 'market',
     loadChildren: () =>
       import('./modules/market/market.module').then((m) => m.MarketModule),
+    canActivate: [AuthGuard],
   },
 ];
 

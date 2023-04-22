@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { LoginComponent } from './modules/login/login.component';
 import { MarketModule } from './modules/market/market.module';
 import { ToastrModule } from 'ngx-toastr';
+import { AuthGuard } from './auth.guard';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent],
@@ -28,7 +29,7 @@ import { ToastrModule } from 'ngx-toastr';
     FormsModule,
     ToastrModule.forRoot(),
   ],
-  providers: [],
+  providers: [AuthGuard],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
