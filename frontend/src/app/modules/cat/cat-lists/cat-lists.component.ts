@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { IMAGE_NAME, IMAGE_PATH } from 'src/app/constants/image.constants';
 import { Cat } from 'src/app/models/cat.models';
 import { CatService } from 'src/app/services/cat.service';
 import { CoreService } from 'src/app/services/core.service';
@@ -15,6 +16,7 @@ import { CreateEditOfferModalComponent } from 'src/app/standalone/create-edit-of
 export class CatListsComponent implements OnInit {
   catList: Cat[] = [];
   address: string = localStorage.getItem('address') || '';
+  image: string[] = [];
 
   constructor(
     private router: Router,
@@ -32,6 +34,15 @@ export class CatListsComponent implements OnInit {
     this.catService.getAvailableCats().subscribe({
       next: (data) => {
         this.catList = data;
+        if (data.length) {
+          // depand on data length random image and add to the image list
+          for (let i = 0; i < data.length; i++) {
+            this.image.push(
+              IMAGE_PATH +
+                IMAGE_NAME[Math.floor(Math.random() * IMAGE_NAME.length)]
+            );
+          }
+        }
       },
       error: (error) => {
         this.notificationService.showError(error.message, 'Fetch Cat Error');

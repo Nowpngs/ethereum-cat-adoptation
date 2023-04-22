@@ -2,7 +2,7 @@
   <div class="content-title">
     All Cat For Adoption
   </div>
-  <ng-container *ngFor="let cat of catList">
+  <ng-container *ngFor="let cat of catList; let index = index">
     <div class="card-content">
       <mat-card>
         <mat-card-header>
@@ -12,7 +12,7 @@
           <mat-card-subtitle>{{ cat.breed }}</mat-card-subtitle>
         </mat-card-header>
         <img mat-card-image
-            src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+            [src]="image[index]"
             alt="Photo of a Cat">
         <mat-card-content>
           <div class="w-full pt-4">
