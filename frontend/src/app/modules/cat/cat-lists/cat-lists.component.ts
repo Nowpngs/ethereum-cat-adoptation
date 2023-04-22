@@ -21,6 +21,7 @@ export class CatListsComponent implements OnInit {
   openCreateOffer(): void {
     if (!this.coreService.isLogin()) {
       this.router.navigate(['login']);
+      return;
     }
     const dialogRef = this.dialog.open(CreateEditOfferModalComponent, {});
   }
