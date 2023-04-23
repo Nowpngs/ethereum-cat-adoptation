@@ -2,6 +2,10 @@
   <div class="content-title">
     All Cat For Adoption
   </div>
+  <div class="h-[400px] flex justify-center items-center"
+      *ngIf="loading">
+    <mat-spinner></mat-spinner>
+  </div>
   <ng-container *ngFor="let cat of catList; let index = index">
     <div class="card-content">
       <mat-card>

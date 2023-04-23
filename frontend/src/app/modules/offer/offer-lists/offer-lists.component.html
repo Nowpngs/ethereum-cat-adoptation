@@ -16,7 +16,11 @@
       </div>
     </div>
   </div>
-  <ng-container *ngIf="isSelectedTab(0)">
+  <div class="h-[400px] flex justify-center items-center"
+      *ngIf="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+  <ng-container *ngIf="isSelectedTab(0) && !loading">
     <div class="table-content">
       <div *ngIf="!buyingOffers.length"
           class="w-full flex items-center justify-center h-[100px]">
@@ -57,7 +61,7 @@
       </table>
     </div>
   </ng-container>
-  <ng-container *ngIf="isSelectedTab(1)">
+  <ng-container *ngIf="isSelectedTab(1) && !loading">
     <div class="table-content">
       <div *ngIf="!sellerOffers.length"
           class="w-full flex items-center justify-center h-[100px]">

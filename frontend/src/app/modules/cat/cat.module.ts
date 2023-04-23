@@ -5,6 +5,7 @@ import { CatRoutingModule } from './cat-routing.module';
 import { CatListsComponent } from './cat-lists/cat-lists.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [CatListsComponent],
@@ -14,6 +15,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatCardModule,
     MatButtonModule,
     MatDialogModule,
+    MatProgressSpinnerModule,
   ],
 })
 export class CatModule {}

@@ -15,6 +15,7 @@ export class MarketListsComponent implements OnInit {
   selectedTab: MarketTab = MarketTab.SELL;
   sellingCatList: Cat[] = [];
   buyingCatList: Cat[] = [];
+  loading: boolean = false;
 
   constructor(
     private dialog: MatDialog,
@@ -50,13 +51,16 @@ export class MarketListsComponent implements OnInit {
   }
 
   getMyCats(): void {
+    this.loading = true;
     this.catServive.getMyCats().subscribe({
       next: (data) => {
         this.sellingCatList = data.filter((cat) => cat.availableForAdoption);
         this.buyingCatList = data.filter((cat) => !cat.availableForAdoption);
+        this.loading = false;
       },
       error: (error) => {
         this.notificationService.showError(error.message, 'Fetch Error');
+        this.loading = false;
       },
     });
   }

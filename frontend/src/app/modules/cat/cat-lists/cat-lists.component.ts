@@ -17,6 +17,7 @@ export class CatListsComponent implements OnInit {
   catList: Cat[] = [];
   address: string = localStorage.getItem('address') || '';
   image: string[] = [];
+  loading: boolean = false;
 
   constructor(
     private router: Router,
@@ -31,6 +32,7 @@ export class CatListsComponent implements OnInit {
   }
 
   getCats(): void {
+    this.loading = true;
     this.catService.getAvailableCats().subscribe({
       next: (data) => {
         this.catList = data;
@@ -43,9 +45,11 @@ export class CatListsComponent implements OnInit {
             );
           }
         }
+        this.loading = false;
       },
       error: (error) => {
         this.notificationService.showError(error.message, 'Fetch Cat Error');
+        this.loading = false;
       },
     });
   }

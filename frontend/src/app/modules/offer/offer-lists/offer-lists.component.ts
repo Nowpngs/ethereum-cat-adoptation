@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { MarketTab } from 'src/app/models/market.models';
 import { Offer, SellerOffer } from 'src/app/models/offer.models';
 import { NotificationService } from 'src/app/services/notification.service';
@@ -15,8 +16,10 @@ export class OfferListsComponent implements OnInit {
   selectedTab: MarketTab = MarketTab.BUY;
   buyingOffers: Offer[] = [];
   sellerOffers: SellerOffer[] = [];
+  loading: boolean = false;
 
   constructor(
+    private router: Router,
     private dialog: MatDialog,
     private offerService: OfferService,
     private notificationService: NotificationService
@@ -59,23 +62,29 @@ export class OfferListsComponent implements OnInit {
   }
 
   getMyBuyingOffers(): void {
+    this.loading = true;
     this.offerService.getMyBuyingOffers().subscribe({
       next: (data) => {
         this.buyingOffers = data;
+        this.loading = false;
       },
       error: (error) => {
         this.notificationService.showError(error.message, 'Fetch Error');
+        this.loading = false;
       },
     });
   }
 
   getMySellerOffers(): void {
+    this.loading = true;
     this.offerService.geyMySellingOffers().subscribe({
       next: (data) => {
         this.sellerOffers = data;
+        this.loading = false;
       },
       error: (error) => {
         this.notificationService.showError(error.message, 'Fetch Error');
+        this.loading = false;
       },
     });
   }
@@ -83,9 +92,7 @@ export class OfferListsComponent implements OnInit {
   onConfirm(id: number): void {
     this.offerService.confirmOffer(id).subscribe({
       next: (data) => {
-        console.log(data);
-        this.getMyBuyingOffers();
-        this.getMySellerOffers();
+        this.router.navigate(['market']);
       },
       error: (error) => {
         this.notificationService.showError(error.message, 'Confirm Error');
