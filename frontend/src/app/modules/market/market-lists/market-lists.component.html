@@ -51,4 +51,29 @@
       </table>
     </div>
   </ng-container>
+  <ng-container *ngIf="isSelectedTab(0)">
+    <div class="table-content">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Breed</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let cat of buyingCatList">
+            <td>{{cat.id}}</td>
+            <td>{{cat.name}}</td>
+            <td>{{cat.age}}</td>
+            <td>{{cat.breed}}</td>
+            <td>{{cat.description}}</td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </ng-container>
 </div>
