@@ -54,30 +54,111 @@ contract CatMarket {
     }
 
     function getBuyerOffer() public view returns (OfferDetail[] memory) {
-        OfferDetail[] memory buyerOffers = new OfferDetail[](offers.length);
-        uint256 counter = 0;
+        uint256 myOffersCount = 0;
         for (uint256 i = 0; i < offers.length; i++) {
-            Offer storage offer = offers[i];
-            if (offer.buyer == msg.sender && offer.isPending) {
-                (
-                    string memory name,
-                    uint256 age,
-                    string memory breed,
-                    bool availableForAdoption,
-                    address owner,
-                    string memory description
-                ) = catProfile.getCat(offer.catIndex);
-                buyerOffers[counter] = OfferDetail(
+            (
+                string memory name,
+                uint256 age,
+                string memory breed,
+                bool availableForAdoption,
+                address owner,
+                string memory description
+            ) = catProfile.getCat(offers[i].catIndex);
+            if (
+                offers[i].buyer == msg.sender &&
+                offers[i].isPending &&
+                availableForAdoption == true
+            ) {
+                myOffersCount++;
+            }
+        }
+
+        if (myOffersCount == 0) {
+            return new OfferDetail[](0);
+        }
+
+        OfferDetail[] memory buyerOffers = new OfferDetail[](myOffersCount);
+        uint256 curentIndex = 0;
+
+        for (uint256 i = 0; i < offers.length; i++) {
+            (
+                string memory name,
+                uint256 age,
+                string memory breed,
+                bool availableForAdoption,
+                address owner,
+                string memory description
+            ) = catProfile.getCat(offers[i].catIndex);
+            if (
+                offers[i].buyer == msg.sender &&
+                offers[i].isPending &&
+                availableForAdoption == true
+            ) {
+                buyerOffers[curentIndex] = OfferDetail(
                     i,
-                    offer.catIndex,
+                    offers[i].catIndex,
                     name,
                     breed,
-                    offer.price
+                    offers[i].price
                 );
-                counter++;
+                curentIndex++;
             }
         }
         return buyerOffers;
+    }
+
+    function getSellerOffer() public view returns (OfferDetail[] memory) {
+        uint256 myOffersCount = 0;
+        for (uint256 i = 0; i < offers.length; i++) {
+            (
+                string memory name,
+                uint256 age,
+                string memory breed,
+                bool availableForAdoption,
+                address owner,
+                string memory description
+            ) = catProfile.getCat(offers[i].catIndex);
+            if (
+                owner == msg.sender &&
+                offers[i].isPending &&
+                availableForAdoption == true
+            ) {
+                myOffersCount++;
+            }
+        }
+
+        if (myOffersCount == 0) {
+            return new OfferDetail[](0);
+        }
+
+        OfferDetail[] memory sellerOffers = new OfferDetail[](myOffersCount);
+        uint256 curentIndex = 0;
+
+        for (uint256 i = 0; i < offers.length; i++) {
+            (
+                string memory name,
+                uint256 age,
+                string memory breed,
+                bool availableForAdoption,
+                address owner,
+                string memory description
+            ) = catProfile.getCat(offers[i].catIndex);
+            if (
+                owner == msg.sender &&
+                offers[i].isPending &&
+                availableForAdoption == true
+            ) {
+                sellerOffers[curentIndex] = OfferDetail(
+                    i,
+                    offers[i].catIndex,
+                    name,
+                    breed,
+                    offers[i].price
+                );
+                curentIndex++;
+            }
+        }
+        return sellerOffers;
     }
 
     function createOffer(uint256 _catIndex, uint256 _price) public payable {
@@ -91,7 +172,6 @@ contract CatMarket {
             string memory description
         ) = catProfile.getCat(_catIndex);
         require(isAdoptable, "Cat not available for adoption");
-        require(msg.value == _price, "Incorrect amount sent");
         require(
             !hasCreatedOffer[msg.sender][_catIndex],
             "Buyer already created an offer"
@@ -110,20 +190,7 @@ contract CatMarket {
         emit OfferEdited(_offerIndex, offer.catIndex, offer.buyer, _newPrice);
     }
 
-    function cancelOffer(uint256 _offerIndex) public {
-        require(_offerIndex < offers.length, "Invalid offer index");
-        Offer storage offer = offers[_offerIndex];
-        require(
-            msg.sender == offer.buyer,
-            "Only the seller can cancel the offer"
-        );
-        require(offer.isPending, "Cannot cancel a confirmed offer");
-        hasCreatedOffer[offer.buyer][offer.catIndex] = false;
-        delete offers[_offerIndex];
-        emit OfferCancelled(_offerIndex, offer.catIndex, offer.buyer);
-    }
-
-    function confirmOrder(uint256 _offerIndex) public {
+    function confirmOffer(uint256 _offerIndex) public {
         require(_offerIndex < offers.length, "Invalid offer index");
         Offer storage offer = offers[_offerIndex];
         (
@@ -136,9 +203,15 @@ contract CatMarket {
         ) = catProfile.getCat(offer.catIndex);
         require(msg.sender == owner, "Only the seller can confirm the offer");
         require(availableForAdoption, "Cat not available for adoption");
+        uint256 price = offer.price;
+        address payable seller = payable(owner);
+        address payable buyer = payable(offer.buyer);
+        require(buyer.balance >= price, "Insufficient balance");
 
         catProfile.transferCatOwnership(offer.catIndex, offer.buyer);
         offer.isPending = false;
+
+        seller.transfer(price);
 
         emit OfferConfirmed(
             _offerIndex,

@@ -162,6 +162,42 @@ app.get("/my-buying-offers", async (req, res) => {
   }
 });
 
+// Get my selling offers
+app.get("/my-selling-offers", async (req, res) => {
+  try {
+    const account = req.headers["address"];
+    const mySellingOffers = await offerProfileContract.methods
+      .getSellerOffer()
+      .call({ from: account });
+
+    res.json(
+      mySellingOffers
+        .reduce((acc, offer) => {
+          const existingCat = acc.find((cat) => cat.catId === offer.catId);
+          if (existingCat) {
+            existingCat.offer.push({ id: offer.id, price: offer.price });
+          } else {
+            acc.push({
+              catId: offer.catId,
+              catBreed: offer.catBreed,
+              catName: offer.catName,
+              offer: [{ id: offer.id, price: offer.price }],
+            });
+          }
+          return acc;
+        }, [])
+        .map((cat) => ({
+          catId: cat.catId,
+          catBreed: cat.catBreed,
+          catName: cat.catName,
+          offer: cat.offer,
+        }))
+    );
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Create new offer
 app.post("/offer", async (req, res) => {
   try {
@@ -198,6 +234,25 @@ app.patch("/offer/:id", async (req, res) => {
 
     const result = await offerProfileContract.methods
       .editOffer(id, price)
+      .send({ from: account, gas: gasLimit });
+
+    res.json({ txHash: result.transactionHash });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post("/confirm-offer", async (req, res) => {
+  try {
+    const account = req.headers["address"];
+    const { id } = req.body;
+
+    const gasLimit = await offerProfileContract.methods
+      .confirmOffer(id)
+      .estimateGas({ from: account });
+
+    const result = await offerProfileContract.methods
+      .confirmOffer(id)
       .send({ from: account, gas: gasLimit });
 
     res.json({ txHash: result.transactionHash });

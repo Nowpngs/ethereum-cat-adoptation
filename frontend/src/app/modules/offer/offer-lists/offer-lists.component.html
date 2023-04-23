@@ -45,4 +45,39 @@
       </table>
     </div>
   </ng-container>
+  <ng-container *ngIf="isSelectedTab(1)">
+    <div class="table-content">
+      <div class="pb-2"
+          *ngFor="let cat of sellerOffers">
+        <div class="w-full flex flex-wrap pb-2 items-end">
+          <div class="w-1/2">
+            <div class="font-bold text-lg items-end">Name: {{ cat.catName }}</div>
+          </div>
+          <div class="w-1/2">
+            <div class="font-bold text-base items-end">Breed: {{ cat.catBreed }}</div>
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Price</th>
+              <th>Confirm</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let offer of cat.offer">
+              <td>{{ offer.id}}</td>
+              <td>{{ offer.price }}</td>
+              <td>
+                <button mat-raised-button
+                    color="basic"
+                    (click)="onConfirm(offer.id)"> CONFIRM</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </ng-container>
 </div>
