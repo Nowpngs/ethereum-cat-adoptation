@@ -6,6 +6,7 @@ const cors = require("cors");
 
 const Web3 = require("web3");
 const CatProfile = require("./build/contracts/CatProfile.json");
+const OfferProfile = require("./build/contracts/OfferProfile.json");
 
 const app = express();
 
@@ -16,10 +17,17 @@ app.use(bodyParser.json());
 const port = 3000;
 
 const web3 = new Web3(process.env.ETHEREUM_NODE_URL);
+
 const catContractAddress = process.env.CAT_CONTRACT_ADDRESS;
 const catProfileContract = new web3.eth.Contract(
   CatProfile.abi,
   catContractAddress
+);
+
+const offerContractAddress = process.env.OFFER_CONTRACT_ADDRESS;
+const offerProfileContract = new web3.eth.Contract(
+  OfferProfile.abi,
+  offerContractAddress
 );
 
 // Authentication endpoint
@@ -127,6 +135,24 @@ app.get("/my-cats", async (req, res) => {
         owner: cat.owner.toLowerCase(),
       }))
     );
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Create new offer
+app.post("offer", async (req, res) => {
+  try {
+    const account = req.header["address"];
+    const { catId, price } = req.body;
+
+    const gasLimit = await offerProfileContract.methods
+      .createOffer(catId, price)
+      .estimateGas({ from: account });
+
+    const result = await offerProfileContract.methods.createOffer(catId, price);
+
+    res.json({ txHash: result.transactionHash });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
