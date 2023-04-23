@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { IMAGE_NAME, IMAGE_PATH } from 'src/app/constants/image.constants';
 import { Cat } from 'src/app/models/cat.models';
@@ -54,11 +54,27 @@ export class CatListsComponent implements OnInit {
     return owner.toLocaleLowerCase() == this.address.toLocaleLowerCase();
   }
 
-  openCreateOffer(): void {
+  openCreateOffer(cat: Cat): void {
     if (!this.coreService.isLogin()) {
       this.router.navigate(['login']);
       return;
     }
-    const dialogRef = this.dialog.open(CreateEditOfferModalComponent, {});
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.width = '500px';
+    dialogConfig.data = {
+      catId: cat.id,
+      catName: cat.name,
+      catBreed: cat.breed,
+      price: 0,
+    };
+
+    const dialogRef = this.dialog.open(
+      CreateEditOfferModalComponent,
+      dialogConfig
+    );
+
+    dialogRef.afterClosed().subscribe((result) => {
+      result === 'success' && this.router.navigate(['offer']);
+    });
   }
 }

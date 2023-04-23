@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import {
@@ -7,7 +7,8 @@ import {
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { OfferModal } from 'src/app/models/offer.models';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-create-edit-offer-modal',
@@ -16,19 +17,29 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     CommonModule,
     MatDialogModule,
     FormsModule,
-    MatFormFieldModule,
+    MatInputModule,
     MatButtonModule,
   ],
   templateUrl: './create-edit-offer-modal.component.html',
   styleUrls: ['./create-edit-offer-modal.component.scss'],
 })
-export class CreateEditOfferModalComponent {
+export class CreateEditOfferModalComponent implements OnInit {
+  offerCreateEdit!: OfferModal;
+
   constructor(
     public dialogRef: MatDialogRef<CreateEditOfferModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: OfferModal
   ) {}
 
-  onNoClick(): void {
+  ngOnInit(): void {
+    this.offerCreateEdit = this.data;
+  }
+
+  dismiss(): void {
     this.dialogRef.close();
+  }
+
+  submit(): void {
+    this.dialogRef.close('success');
   }
 }

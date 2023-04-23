@@ -1,8 +1,33 @@
-<h1 mat-dialog-title>Hi </h1>
+<h1 mat-dialog-title>Create Offer</h1>
 <div mat-dialog-content>
-  <p>What's your favorite animal?</p>
-  <mat-form-field appearance="fill">
-    <mat-label>Favorite Animal</mat-label>
+  <p>Id</p>
+  <mat-form-field class="w-full"
+      appearance="fill">
+    <mat-label>Cat Id</mat-label>
+    <input matInput
+        [(ngModel)]="offerCreateEdit.catId"
+        disabled>
+  </mat-form-field>
+  <p>Name</p>
+  <mat-form-field class="w-full"
+      appearance="fill">
+    <mat-label>Input Name</mat-label>
+    <input matInput
+        [(ngModel)]="offerCreateEdit.catName"
+        disabled>
+  </mat-form-field>
+  <p>Breed</p>
+  <mat-form-field class="w-full"
+      appearance="fill">
+    <mat-label>Input Breed</mat-label>
+    <input matInput
+        [(ngModel)]="offerCreateEdit.catBreed"
+        disabled>
+  </mat-form-field>
+  <p>Price (wei)</p>
+  <mat-form-field class="w-full"
+      appearance="fill">
+    <mat-label>Input Offer Price</mat-label>
     <input matInput>
   </mat-form-field>
 </div>
@@ -10,11 +35,12 @@
     class="footer">
   <div class="pr-2">
     <button mat-button
-        (click)="onNoClick()">No Thanks</button>
+        (click)="dismiss()">Dismiss</button>
   </div>
   <div>
     <button mat-raised-button
         color="primary"
-        cdkFocusInitial>Ok</button>
+        cdkFocusInitial
+        (click)="submit()">Submit</button>
   </div>
 </div>

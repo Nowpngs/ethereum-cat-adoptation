@@ -36,12 +36,12 @@ export class MarketListsComponent implements OnInit {
 
   openCreateEditCat(cat?: Cat): void {
     const catData = cat ? cat : {};
-    const dislogConfig = new MatDialogConfig();
-    dislogConfig.width = '500px';
-    dislogConfig.data = catData;
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.width = '500px';
+    dialogConfig.data = catData;
     const dialogRef = this.dialog.open(
       CreateEditCatModelComponent,
-      dislogConfig
+      dialogConfig
     );
 
     dialogRef.afterClosed().subscribe((result) => {
