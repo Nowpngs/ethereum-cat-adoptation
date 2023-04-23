@@ -6,26 +6,34 @@ import "./CatProfile.sol";
 contract CatMarket {
     struct Offer {
         uint256 catIndex;
-        address seller;
+        address buyer;
         uint256 price;
-        bool isSold;
+        bool isPending;
     }
 
     Offer[] public offers;
     CatProfile public catProfile;
 
+    mapping(address => mapping(uint256 => bool)) public hasCreatedOffer;
+
     event OfferCreated(
         uint256 indexed offerIndex,
         uint256 catIndex,
-        address seller,
+        address buyer,
         uint256 price
     );
     event OfferCancelled(
         uint256 indexed offerIndex,
         uint256 catIndex,
-        address seller
+        address buyer
     );
-    event OfferSold(
+    event OfferEdited(
+        uint256 indexed offerIndex,
+        uint256 catIndex,
+        address buyer,
+        uint256 price
+    );
+    event OfferConfirmed(
         uint256 indexed offerIndex,
         uint256 catIndex,
         address seller,
@@ -37,8 +45,52 @@ contract CatMarket {
         catProfile = _catProfile;
     }
 
-    function createOffer(uint256 _catIndex, uint256 _price) public {
+    function createOffer(uint256 _catIndex, uint256 _price) public payable {
         require(_catIndex < catProfile.getNumberOfCats(), "Invalid cat index");
+        (
+            string memory name,
+            uint256 age,
+            string memory breed,
+            bool isAdoptable,
+            address owner,
+            string memory description
+        ) = catProfile.getCat(_catIndex);
+        require(isAdoptable, "Cat not available for adoption");
+        require(msg.value == _price, "Incorrect amount sent");
+        require(
+            !hasCreatedOffer[msg.sender][_catIndex],
+            "Buyer already created an offer"
+        );
+        hasCreatedOffer[msg.sender][_catIndex] = true;
+        offers.push(Offer(_catIndex, msg.sender, _price, true));
+        emit OfferCreated(offers.length - 1, _catIndex, msg.sender, _price);
+    }
+
+    function editOffer(uint256 _offerIndex, uint256 _newPrice) public {
+        require(_offerIndex < offers.length, "Invalid offer index");
+        Offer storage offer = offers[_offerIndex];
+        require(msg.sender == offer.buyer, "Only the buyer can edit the offer");
+        require(offer.isPending, "Cannot edit a confirmed offer");
+        offer.price = _newPrice;
+        emit OfferEdited(_offerIndex, offer.catIndex, offer.buyer, _newPrice);
+    }
+
+    function cancelOffer(uint256 _offerIndex) public {
+        require(_offerIndex < offers.length, "Invalid offer index");
+        Offer storage offer = offers[_offerIndex];
+        require(
+            msg.sender == offer.buyer,
+            "Only the seller can cancel the offer"
+        );
+        require(offer.isPending, "Cannot cancel a confirmed offer");
+        hasCreatedOffer[offer.buyer][offer.catIndex] = false;
+        delete offers[_offerIndex];
+        emit OfferCancelled(_offerIndex, offer.catIndex, offer.buyer);
+    }
+
+    function confirmOrder(uint256 _offerIndex) public {
+        require(_offerIndex < offers.length, "Invalid offer index");
+        Offer storage offer = offers[_offerIndex];
         (
             string memory name,
             uint256 age,
@@ -46,56 +98,19 @@ contract CatMarket {
             bool availableForAdoption,
             address owner,
             string memory description
-        ) = catProfile.getCat(_catIndex);
+        ) = catProfile.getCat(offer.catIndex);
+        require(msg.sender == owner, "Only the seller can confirm the offer");
         require(availableForAdoption, "Cat not available for adoption");
-        offers.push(Offer(_catIndex, msg.sender, _price, false));
-        emit OfferCreated(offers.length - 1, _catIndex, msg.sender, _price);
-    }
 
-    function cancelOffer(uint256 _offerIndex) public {
-        require(_offerIndex < offers.length, "Invalid offer index");
-        Offer storage offer = offers[_offerIndex];
-        require(
-            msg.sender == offer.seller,
-            "Only the seller can cancel the offer"
-        );
-        require(offer.isSold == false, "Cannot cancel a sold offer");
-        delete offers[_offerIndex];
-        emit OfferCancelled(_offerIndex, offer.catIndex, offer.seller);
-    }
+        catProfile.transferCatOwnership(offer.catIndex, offer.buyer);
+        offer.isPending = false;
 
-    function buyCat(uint256 _offerIndex) public payable {
-        require(_offerIndex < offers.length, "Invalid offer index");
-        Offer storage offer = offers[_offerIndex];
-        require(msg.sender != offer.seller, "Cannot buy your own cat");
-        require(offer.isSold == false, "Cat already sold");
-        require(msg.value == offer.price, "Invalid price");
-        address payable seller = payable(offer.seller);
-        seller.transfer(msg.value);
-        catProfile.transferCatOwnership(offer.catIndex, msg.sender);
-        offer.isSold = true;
-        emit OfferSold(
+        emit OfferConfirmed(
             _offerIndex,
             offer.catIndex,
-            offer.seller,
             msg.sender,
+            offer.buyer,
             offer.price
         );
-    }
-
-    function getNumberOfOffers() public view returns (uint256) {
-        return offers.length;
-    }
-
-    function getOffer(
-        uint256 _offerIndex
-    )
-        public
-        view
-        returns (uint256 catIndex, address seller, uint256 price, bool isSold)
-    {
-        require(_offerIndex < offers.length, "Invalid offer index");
-        Offer storage offer = offers[_offerIndex];
-        return (offer.catIndex, offer.seller, offer.price, offer.isSold);
     }
 }
