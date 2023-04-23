@@ -1,6 +1,6 @@
 <div class="main-content">
   <div class="content-title">
-    My Markets Place
+    My Offers
   </div>
   <div class="tab-selector">
     <div class="tabs-row">
@@ -36,7 +36,8 @@
             <td>{{ offer.price }}</td>
             <td>
               <button mat-raised-button
-                  color="basic">
+                  color="basic"
+                  (click)="openEditOffer(offer)">
                 EDIT</button>
             </td>
           </tr>

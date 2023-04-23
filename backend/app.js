@@ -185,6 +185,27 @@ app.post("/offer", async (req, res) => {
   }
 });
 
+// Edit offer
+app.patch("/offer/:id", async (req, res) => {
+  try {
+    const account = req.headers["address"];
+    const { id } = req.params;
+    const { price } = req.body;
+
+    const gasLimit = await offerProfileContract.methods
+      .editOffer(id, price)
+      .estimateGas({ from: account });
+
+    const result = await offerProfileContract.methods
+      .editOffer(id, price)
+      .send({ from: account, gas: gasLimit });
+
+    res.json({ txHash: result.transactionHash });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);
 });

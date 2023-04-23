@@ -17,4 +17,8 @@ export class OfferService {
   createOffer(data: { catId: number; price: number }): Observable<any> {
     return this.apiService.post(BACKEND_API.offer, data);
   }
+
+  editOffer(id: number, data: { price: number }): Observable<any> {
+    return this.apiService.update(BACKEND_API.offer + '/' + id, data);
+  }
 }

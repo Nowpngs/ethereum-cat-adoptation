@@ -62,5 +62,17 @@ export class CreateEditOfferModalComponent implements OnInit {
     });
   }
 
-  editOffer(): void {}
+  editOffer(): void {
+    const data = {
+      price: this.offerCreateEdit.price,
+    };
+    this.offerService.editOffer(this.offerCreateEdit.id, data).subscribe({
+      next: () => {
+        this.dialogRef.close('success');
+      },
+      error: (error) => {
+        this.notificationService.showError(error.message, 'Edit Offer Error');
+      },
+    });
+  }
 }
