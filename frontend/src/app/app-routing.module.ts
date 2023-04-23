@@ -20,7 +20,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'offer',
+    path: 'application',
     loadChildren: () =>
       import('./modules/offer/offer.module').then((m) => m.OfferModule),
     canActivate: [AuthGuard],

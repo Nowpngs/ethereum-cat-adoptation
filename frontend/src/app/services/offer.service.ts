@@ -18,11 +18,19 @@ export class OfferService {
     return this.apiService.get<SellerOffer[]>(BACKEND_API.my_selling_offers);
   }
 
-  createOffer(data: { catId: number; price: number }): Observable<any> {
+  createOffer(data: {
+    catId: number;
+    buyerName: string;
+    buyerEmail: string;
+    buyerPhone: string;
+  }): Observable<any> {
     return this.apiService.post(BACKEND_API.offer, data);
   }
 
-  editOffer(id: number, data: { price: number }): Observable<any> {
+  editOffer(
+    id: number,
+    data: { buyerName: string; buyerEmail: string; buyerPhone: string }
+  ): Observable<any> {
     return this.apiService.update(BACKEND_API.offer + '/' + id, data);
   }
 

@@ -3,7 +3,9 @@ export interface Offer {
   catId: number;
   catName: string;
   catBreed: string;
-  price: number;
+  buyerName: string;
+  buyerEmail: string;
+  buyerPhone: string;
 }
 
 export interface SellerOffer {
@@ -15,5 +17,7 @@ export interface SellerOffer {
 
 export interface CompactOffer {
   id: number;
-  price: number;
+  buyerName: string;
+  buyerEmail: string;
+  buyerPhone: string;
 }

@@ -7,8 +7,10 @@ contract CatMarket {
     struct Offer {
         uint256 catIndex;
         address buyer;
-        uint256 price;
         bool isPending;
+        string buyerName;
+        string buyerEmail;
+        string buyerPhone;
     }
 
     struct OfferDetail {
@@ -16,7 +18,9 @@ contract CatMarket {
         uint256 catId;
         string catName;
         string catBreed;
-        uint256 price;
+        string buyerName;
+        string buyerEmail;
+        string buyerPhone;
     }
 
     Offer[] public offers;
@@ -27,8 +31,7 @@ contract CatMarket {
     event OfferCreated(
         uint256 indexed offerIndex,
         uint256 catIndex,
-        address buyer,
-        uint256 price
+        address buyer
     );
     event OfferCancelled(
         uint256 indexed offerIndex,
@@ -38,15 +41,13 @@ contract CatMarket {
     event OfferEdited(
         uint256 indexed offerIndex,
         uint256 catIndex,
-        address buyer,
-        uint256 price
+        address buyer
     );
     event OfferConfirmed(
         uint256 indexed offerIndex,
         uint256 catIndex,
         address seller,
-        address buyer,
-        uint256 price
+        address buyer
     );
 
     constructor(CatProfile _catProfile) {
@@ -99,7 +100,9 @@ contract CatMarket {
                     offers[i].catIndex,
                     name,
                     breed,
-                    offers[i].price
+                    offers[i].buyerName,
+                    offers[i].buyerEmail,
+                    offers[i].buyerPhone
                 );
                 curentIndex++;
             }
@@ -153,7 +156,9 @@ contract CatMarket {
                     offers[i].catIndex,
                     name,
                     breed,
-                    offers[i].price
+                    offers[i].buyerName,
+                    offers[i].buyerEmail,
+                    offers[i].buyerPhone
                 );
                 curentIndex++;
             }
@@ -161,7 +166,12 @@ contract CatMarket {
         return sellerOffers;
     }
 
-    function createOffer(uint256 _catIndex, uint256 _price) public payable {
+    function createOffer(
+        uint256 _catIndex,
+        string memory _buyerName,
+        string memory _buyerEmail,
+        string memory _buyerPhone
+    ) public payable {
         require(_catIndex < catProfile.getNumberOfCats(), "Invalid cat index");
         (
             string memory name,
@@ -177,17 +187,33 @@ contract CatMarket {
             "Buyer already created an offer"
         );
         hasCreatedOffer[msg.sender][_catIndex] = true;
-        offers.push(Offer(_catIndex, msg.sender, _price, true));
-        emit OfferCreated(offers.length - 1, _catIndex, msg.sender, _price);
+        offers.push(
+            Offer(
+                _catIndex,
+                msg.sender,
+                true,
+                _buyerName,
+                _buyerEmail,
+                _buyerPhone
+            )
+        );
+        emit OfferCreated(offers.length - 1, _catIndex, msg.sender);
     }
 
-    function editOffer(uint256 _offerIndex, uint256 _newPrice) public {
+    function editOffer(
+        uint256 _offerIndex,
+        string memory _buyerName,
+        string memory _buyerEmail,
+        string memory _buyerPhone
+    ) public {
         require(_offerIndex < offers.length, "Invalid offer index");
         Offer storage offer = offers[_offerIndex];
         require(msg.sender == offer.buyer, "Only the buyer can edit the offer");
         require(offer.isPending, "Cannot edit a confirmed offer");
-        offer.price = _newPrice;
-        emit OfferEdited(_offerIndex, offer.catIndex, offer.buyer, _newPrice);
+        offer.buyerName = _buyerName;
+        offer.buyerEmail = _buyerEmail;
+        offer.buyerPhone = _buyerPhone;
+        emit OfferEdited(_offerIndex, offer.catIndex, offer.buyer);
     }
 
     function confirmOffer(uint256 _offerIndex) public {
@@ -210,8 +236,7 @@ contract CatMarket {
             _offerIndex,
             offer.catIndex,
             msg.sender,
-            offer.buyer,
-            offer.price
+            offer.buyer
         );
     }
 }

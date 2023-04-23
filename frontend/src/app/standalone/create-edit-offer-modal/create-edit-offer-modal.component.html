@@ -1,14 +1,6 @@
-<h1 mat-dialog-title>{{ offerCreateEdit.id ? 'Edit Offer' : 'Create Offer'}}</h1>
+<h1 mat-dialog-title>{{ offerCreateEdit.id ? 'Edit Application' : 'Create Application'}}</h1>
 <div mat-dialog-content>
-  <p>Id</p>
-  <mat-form-field class="w-full"
-      appearance="fill">
-    <mat-label>Cat Id</mat-label>
-    <input matInput
-        [(ngModel)]="offerCreateEdit.catId"
-        disabled>
-  </mat-form-field>
-  <p>Name</p>
+  <p>Cat Name</p>
   <mat-form-field class="w-full"
       appearance="fill">
     <mat-label>Input Name</mat-label>
@@ -24,12 +16,26 @@
         [(ngModel)]="offerCreateEdit.catBreed"
         disabled>
   </mat-form-field>
-  <p>Price (wei)</p>
+  <p>Name</p>
   <mat-form-field class="w-full"
       appearance="fill">
-    <mat-label>Input Offer Price</mat-label>
+    <mat-label>Input Buyer Name</mat-label>
     <input matInput
-        [(ngModel)]="offerCreateEdit.price">
+        [(ngModel)]="offerCreateEdit.buyerName">
+  </mat-form-field>
+  <p>Email</p>
+  <mat-form-field class="w-full"
+      appearance="fill">
+    <mat-label>Input Buyer Email</mat-label>
+    <input matInput
+        [(ngModel)]="offerCreateEdit.buyerEmail">
+  </mat-form-field>
+  <p>Email</p>
+  <mat-form-field class="w-full"
+      appearance="fill">
+    <mat-label>Input Buyer Phone</mat-label>
+    <input matInput
+        [(ngModel)]="offerCreateEdit.buyerPhone">
   </mat-form-field>
 </div>
 <div mat-dialog-actions

@@ -50,7 +50,9 @@ export class CreateEditOfferModalComponent implements OnInit {
   createOffer(): void {
     const data = {
       catId: this.offerCreateEdit.catId,
-      price: this.offerCreateEdit.price,
+      buyerName: this.offerCreateEdit.buyerName,
+      buyerEmail: this.offerCreateEdit.buyerEmail,
+      buyerPhone: this.offerCreateEdit.buyerPhone,
     };
     this.offerService.createOffer(data).subscribe({
       next: () => {
@@ -64,7 +66,9 @@ export class CreateEditOfferModalComponent implements OnInit {
 
   editOffer(): void {
     const data = {
-      price: this.offerCreateEdit.price,
+      buyerName: this.offerCreateEdit.buyerName,
+      buyerEmail: this.offerCreateEdit.buyerEmail,
+      buyerPhone: this.offerCreateEdit.buyerPhone,
     };
     this.offerService.editOffer(this.offerCreateEdit.id, data).subscribe({
       next: () => {

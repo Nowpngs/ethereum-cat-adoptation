@@ -20,8 +20,8 @@ export const USER_FEATURES: Features[] = [
     featureUrl: '/market',
   },
   {
-    featureName: 'My Offers',
+    featureName: 'My Applications',
     icon: '',
-    featureUrl: '/offer',
+    featureUrl: '/application',
   },
 ];

@@ -41,9 +41,11 @@ export class OfferListsComponent implements OnInit {
     dialogConfig.data = {
       catId: offer.catId,
       catName: offer.catName,
-      price: offer.price,
       id: offer.id,
       catBreed: offer.catBreed,
+      buyerName: offer.buyerName,
+      buyerEmail: offer.buyerEmail,
+      buyerPhone: offer.buyerPhone,
     };
 
     const dialogRef = this.dialog.open(

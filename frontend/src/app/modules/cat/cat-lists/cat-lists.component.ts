@@ -65,7 +65,6 @@ export class CatListsComponent implements OnInit {
       catId: cat.id,
       catName: cat.name,
       catBreed: cat.breed,
-      price: 0,
     };
 
     const dialogRef = this.dialog.open(
@@ -74,7 +73,7 @@ export class CatListsComponent implements OnInit {
     );
 
     dialogRef.afterClosed().subscribe((result) => {
-      result === 'success' && this.router.navigate(['offer']);
+      result === 'success' && this.router.navigate(['application']);
     });
   }
 }

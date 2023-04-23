@@ -152,9 +152,11 @@ app.get("/my-buying-offers", async (req, res) => {
       myBuyingOffers.map((offer, index) => ({
         id: offer.id,
         catId: offer.catId,
-        price: offer.price,
         catBreed: offer.catBreed,
         catName: offer.catName,
+        buyerName: offer.buyerName,
+        buyerEmail: offer.buyerEmail,
+        buyerPhone: offer.buyerPhone,
       }))
     );
   } catch (err) {
@@ -181,7 +183,14 @@ app.get("/my-selling-offers", async (req, res) => {
               catId: offer.catId,
               catBreed: offer.catBreed,
               catName: offer.catName,
-              offer: [{ id: offer.id, price: offer.price }],
+              offer: [
+                {
+                  id: offer.id,
+                  buyerName: offer.buyerName,
+                  buyerEmail: offer.buyerEmail,
+                  buyerPhone: offer.buyerPhone,
+                },
+              ],
             });
           }
           return acc;
@@ -202,14 +211,14 @@ app.get("/my-selling-offers", async (req, res) => {
 app.post("/offer", async (req, res) => {
   try {
     const account = req.headers["address"];
-    const { catId, price } = req.body;
+    const { catId, buyerName, buyerEmail, buyerPhone } = req.body;
 
     const gasLimit = await offerProfileContract.methods
-      .createOffer(catId, price)
+      .createOffer(catId, buyerName, buyerEmail, buyerPhone)
       .estimateGas({ from: account });
 
     const result = await offerProfileContract.methods
-      .createOffer(catId, price)
+      .createOffer(catId, buyerName, buyerEmail, buyerPhone)
       .send({
         from: account,
         gas: gasLimit,
@@ -226,14 +235,14 @@ app.patch("/offer/:id", async (req, res) => {
   try {
     const account = req.headers["address"];
     const { id } = req.params;
-    const { price } = req.body;
+    const { buyerName, buyerEmail, buyerPhone } = req.body;
 
     const gasLimit = await offerProfileContract.methods
-      .editOffer(id, price)
+      .editOffer(id, buyerName, buyerEmail, buyerPhone)
       .estimateGas({ from: account });
 
     const result = await offerProfileContract.methods
-      .editOffer(id, price)
+      .editOffer(id, buyerName, buyerEmail, buyerPhone)
       .send({ from: account, gas: gasLimit });
 
     res.json({ txHash: result.transactionHash });

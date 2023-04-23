@@ -1,6 +1,6 @@
 <div class="main-content">
   <div class="content-title">
-    My Offers
+    My Applications
   </div>
   <div class="tab-selector">
     <div class="tabs-row">
@@ -24,7 +24,9 @@
             <th>ID</th>
             <th>Name</th>
             <th>Breed</th>
-            <th>Price</th>
+            <th>Buyer Name</th>
+            <th>Buyer Email</th>
+            <th>Buyer Phone</th>
             <th>Edit</th>
           </tr>
         </thead>
@@ -33,7 +35,9 @@
             <td>{{ offer.id }}</td>
             <td>{{ offer.catName }}</td>
             <td>{{ offer.catBreed }}</td>
-            <td>{{ offer.price }}</td>
+            <td>{{ offer.buyerName }}</td>
+            <td>{{ offer.buyerEmail }}</td>
+            <td>{{ offer.buyerPhone }}</td>
             <td>
               <button mat-raised-button
                   color="basic"
@@ -61,14 +65,18 @@
           <thead>
             <tr>
               <th>ID</th>
-              <th>Price</th>
+              <th>Buyer Name</th>
+              <th>Buyer Email</th>
+              <th>Buyer Phone</th>
               <th>Confirm</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let offer of cat.offer">
               <td>{{ offer.id}}</td>
-              <td>{{ offer.price }}</td>
+              <td>{{ offer.buyerName }}</td>
+              <td>{{ offer.buyerEmail }}</td>
+              <td>{{ offer.buyerPhone }}</td>
               <td>
                 <button mat-raised-button
                     color="basic"
