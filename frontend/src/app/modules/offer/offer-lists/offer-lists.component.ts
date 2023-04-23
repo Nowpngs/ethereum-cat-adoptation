@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MarketTab } from 'src/app/models/market.models';
+import { Offer } from 'src/app/models/offer.models';
 import { NotificationService } from 'src/app/services/notification.service';
 import { OfferService } from 'src/app/services/offer.service';
 
@@ -11,6 +12,8 @@ import { OfferService } from 'src/app/services/offer.service';
 })
 export class OfferListsComponent implements OnInit {
   selectedTab: MarketTab = MarketTab.BUY;
+  buyingOffers: Offer[] = [];
+
   constructor(
     private dialog: MatDialog,
     private offerService: OfferService,
@@ -32,7 +35,7 @@ export class OfferListsComponent implements OnInit {
   getMyBuyingOffers(): void {
     this.offerService.getMyBuyingOffers().subscribe({
       next: (data) => {
-        console.log(data);
+        this.buyingOffers = data;
       },
       error: (error) => {
         this.notificationService.showError(error.message, 'Fetch Error');

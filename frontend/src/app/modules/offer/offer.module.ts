@@ -3,15 +3,11 @@ import { CommonModule } from '@angular/common';
 
 import { OfferRoutingModule } from './offer-routing.module';
 import { OfferListsComponent } from './offer-lists/offer-lists.component';
-
+import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
-  declarations: [
-    OfferListsComponent
-  ],
-  imports: [
-    CommonModule,
-    OfferRoutingModule
-  ]
+  declarations: [OfferListsComponent],
+  imports: [CommonModule, OfferRoutingModule, FormsModule, MatButtonModule],
 })
-export class OfferModule { }
+export class OfferModule {}

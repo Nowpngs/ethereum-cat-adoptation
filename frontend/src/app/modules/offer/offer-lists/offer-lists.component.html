@@ -1,1 +1,47 @@
-<p>offer-lists works!</p>
+<div class="main-content">
+  <div class="content-title">
+    My Markets Place
+  </div>
+  <div class="tab-selector">
+    <div class="tabs-row">
+      <div class="tab"
+          [ngClass]="{'selected': isSelectedTab(0)}"
+          (click)="changeTab(0)">
+        BUYING
+      </div>
+      <div class="tab"
+          [ngClass]="{'selected': isSelectedTab(1)}"
+          (click)="changeTab(1)">
+        SELLING
+      </div>
+    </div>
+  </div>
+  <ng-container *ngIf="isSelectedTab(0)">
+    <div class="table-content">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Breed</th>
+            <th>Price</th>
+            <th>Edit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let offer of buyingOffers">
+            <td>{{ offer.id }}</td>
+            <td>{{ offer.catName }}</td>
+            <td>{{ offer.catBreed }}</td>
+            <td>{{ offer.price }}</td>
+            <td>
+              <button mat-raised-button
+                  color="basic">
+                EDIT</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </ng-container>
+</div>
