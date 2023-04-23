@@ -23,7 +23,15 @@
             color="primary"
             (click)="openCreateEditCat()">ADDING CAT</button>
       </div>
-      <table>
+      <div *ngIf="!sellingCatList.length"
+          class="w-full flex items-center justify-center h-[100px]">
+        <mat-icon color="primary"
+            fontIcon="block"></mat-icon>
+        <div class="text-xl pl-2 text-primary">
+          No Data
+        </div>
+      </div>
+      <table *ngIf="sellingCatList.length">
         <thead>
           <tr>
             <th>ID</th>
@@ -53,7 +61,15 @@
   </ng-container>
   <ng-container *ngIf="isSelectedTab(0)">
     <div class="table-content">
-      <table>
+      <div *ngIf="!buyingCatList.length"
+          class="w-full flex items-center justify-center h-[100px]">
+        <mat-icon color="primary"
+            fontIcon="block"></mat-icon>
+        <div class="text-xl pl-2 text-primary">
+          No Data
+        </div>
+      </div>
+      <table *ngIf="buyingCatList.length">
         <thead>
           <tr>
             <th>ID</th>

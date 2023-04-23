@@ -5,9 +5,16 @@ import { OfferRoutingModule } from './offer-routing.module';
 import { OfferListsComponent } from './offer-lists/offer-lists.component';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [OfferListsComponent],
-  imports: [CommonModule, OfferRoutingModule, FormsModule, MatButtonModule],
+  imports: [
+    CommonModule,
+    OfferRoutingModule,
+    FormsModule,
+    MatButtonModule,
+    MatIconModule,
+  ],
 })
 export class OfferModule {}

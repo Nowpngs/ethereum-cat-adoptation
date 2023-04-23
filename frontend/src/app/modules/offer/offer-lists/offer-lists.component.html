@@ -18,7 +18,15 @@
   </div>
   <ng-container *ngIf="isSelectedTab(0)">
     <div class="table-content">
-      <table>
+      <div *ngIf="!buyingOffers.length"
+          class="w-full flex items-center justify-center h-[100px]">
+        <mat-icon color="primary"
+            fontIcon="block"></mat-icon>
+        <div class="text-xl pl-2 text-primary">
+          No Data
+        </div>
+      </div>
+      <table *ngIf="buyingOffers.length">
         <thead>
           <tr>
             <th>ID</th>
@@ -51,6 +59,14 @@
   </ng-container>
   <ng-container *ngIf="isSelectedTab(1)">
     <div class="table-content">
+      <div *ngIf="!sellerOffers.length"
+          class="w-full flex items-center justify-center h-[100px]">
+        <mat-icon color="primary"
+            fontIcon="block"></mat-icon>
+        <div class="text-xl pl-2 text-primary">
+          No Data
+        </div>
+      </div>
       <div class="pb-2"
           *ngFor="let cat of sellerOffers">
         <div class="w-full flex flex-wrap pb-2 items-end">

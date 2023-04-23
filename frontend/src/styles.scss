@@ -21,6 +21,10 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+.text-primary {
+  color: var(--primary-color);
+}
+
 .main-content {
   width: 100%;
   padding: 20px;
