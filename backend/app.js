@@ -145,7 +145,7 @@ app.get("/my-buying-offers", async (req, res) => {
   try {
     const account = req.headers["address"];
     const myBuyingOffers = await offerProfileContract.methods
-      .getMyBuyingOffers()
+      .getBuyerOffer()
       .call({ from: account });
 
     res.json(
@@ -165,7 +165,7 @@ app.get("/my-buying-offers", async (req, res) => {
 // Create new offer
 app.post("/offer", async (req, res) => {
   try {
-    const account = req.header["address"];
+    const account = req.headers["address"];
     const { catId, price } = req.body;
 
     const gasLimit = await offerProfileContract.methods
