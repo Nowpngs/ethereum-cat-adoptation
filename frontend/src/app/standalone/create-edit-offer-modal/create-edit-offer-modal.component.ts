@@ -7,8 +7,10 @@ import {
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { OfferModal } from 'src/app/models/offer.models';
+import { Offer } from 'src/app/models/offer.models';
 import { MatInputModule } from '@angular/material/input';
+import { OfferService } from 'src/app/services/offer.service';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-create-edit-offer-modal',
@@ -24,11 +26,13 @@ import { MatInputModule } from '@angular/material/input';
   styleUrls: ['./create-edit-offer-modal.component.scss'],
 })
 export class CreateEditOfferModalComponent implements OnInit {
-  offerCreateEdit!: OfferModal;
+  offerCreateEdit!: Offer;
 
   constructor(
+    private offerService: OfferService,
+    private notificationService: NotificationService,
     public dialogRef: MatDialogRef<CreateEditOfferModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: OfferModal
+    @Inject(MAT_DIALOG_DATA) public data: Offer
   ) {}
 
   ngOnInit(): void {
@@ -40,6 +44,23 @@ export class CreateEditOfferModalComponent implements OnInit {
   }
 
   submit(): void {
-    this.dialogRef.close('success');
+    !this.offerCreateEdit.id ? this.createOffer() : this.editOffer();
   }
+
+  createOffer(): void {
+    const data = {
+      catId: this.offerCreateEdit.catId,
+      price: this.offerCreateEdit.price,
+    };
+    this.offerService.createOffer(data).subscribe({
+      next: () => {
+        this.dialogRef.close('success');
+      },
+      error: (error) => {
+        this.notificationService.showError(error.message, 'Create Offer Error');
+      },
+    });
+  }
+
+  editOffer(): void {}
 }

@@ -6,7 +6,7 @@ const cors = require("cors");
 
 const Web3 = require("web3");
 const CatProfile = require("./build/contracts/CatProfile.json");
-const OfferProfile = require("./build/contracts/OfferProfile.json");
+const OfferProfile = require("./build/contracts/CatMarket.json");
 
 const app = express();
 
@@ -140,8 +140,30 @@ app.get("/my-cats", async (req, res) => {
   }
 });
 
+// Get my buying offers
+app.get("/my-buying-offers", async (req, res) => {
+  try {
+    const account = req.headers["address"];
+    const myBuyingOffers = await offerProfileContract.methods
+      .getMyBuyingOffers()
+      .call({ from: account });
+
+    res.json(
+      myBuyingOffers.map((offer, index) => ({
+        id: offer.id,
+        catId: offer.catId,
+        price: offer.price,
+        catBreed: offer.catBreed,
+        catName: offer.catName,
+      }))
+    );
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Create new offer
-app.post("offer", async (req, res) => {
+app.post("/offer", async (req, res) => {
   try {
     const account = req.header["address"];
     const { catId, price } = req.body;
@@ -150,7 +172,12 @@ app.post("offer", async (req, res) => {
       .createOffer(catId, price)
       .estimateGas({ from: account });
 
-    const result = await offerProfileContract.methods.createOffer(catId, price);
+    const result = await offerProfileContract.methods
+      .createOffer(catId, price)
+      .send({
+        from: account,
+        gas: gasLimit,
+      });
 
     res.json({ txHash: result.transactionHash });
   } catch (err) {

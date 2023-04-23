@@ -11,6 +11,14 @@ contract CatMarket {
         bool isPending;
     }
 
+    struct OfferDetail {
+        uint256 id;
+        uint256 catId;
+        string catName;
+        string catBreed;
+        uint256 price;
+    }
+
     Offer[] public offers;
     CatProfile public catProfile;
 
@@ -43,6 +51,33 @@ contract CatMarket {
 
     constructor(CatProfile _catProfile) {
         catProfile = _catProfile;
+    }
+
+    function getBuyerOffer() public view returns (OfferDetail[] memory) {
+        OfferDetail[] memory buyerOffers = new OfferDetail[](offers.length);
+        uint256 counter = 0;
+        for (uint256 i = 0; i < offers.length; i++) {
+            Offer storage offer = offers[i];
+            if (offer.buyer == msg.sender && offer.isPending) {
+                (
+                    string memory name,
+                    uint256 age,
+                    string memory breed,
+                    bool availableForAdoption,
+                    address owner,
+                    string memory description
+                ) = catProfile.getCat(offer.catIndex);
+                buyerOffers[counter] = OfferDetail(
+                    i,
+                    offer.catIndex,
+                    name,
+                    breed,
+                    offer.price
+                );
+                counter++;
+            }
+        }
+        return buyerOffers;
     }
 
     function createOffer(uint256 _catIndex, uint256 _price) public payable {
