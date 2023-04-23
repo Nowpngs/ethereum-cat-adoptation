@@ -203,15 +203,8 @@ contract CatMarket {
         ) = catProfile.getCat(offer.catIndex);
         require(msg.sender == owner, "Only the seller can confirm the offer");
         require(availableForAdoption, "Cat not available for adoption");
-        uint256 price = offer.price;
-        address payable seller = payable(owner);
-        address payable buyer = payable(offer.buyer);
-        require(buyer.balance >= price, "Insufficient balance");
-
         catProfile.transferCatOwnership(offer.catIndex, offer.buyer);
         offer.isPending = false;
-
-        seller.transfer(price);
 
         emit OfferConfirmed(
             _offerIndex,

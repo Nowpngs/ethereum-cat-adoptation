@@ -112,10 +112,7 @@ contract CatProfile {
         return cats.length;
     }
 
-    function transferCatOwnership(
-        uint256 _index,
-        address _newOwner
-    ) public onlyOwner(_index) {
+    function transferCatOwnership(uint256 _index, address _newOwner) public {
         require(_index < cats.length, "Invalid index");
         Cat storage cat = cats[_index];
         cat.owner = _newOwner;
